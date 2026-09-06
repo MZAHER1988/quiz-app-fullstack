@@ -10,7 +10,7 @@ namespace QuizApp.Controllers
     public class QuizController : Controller
     {
         private readonly ApplicationDbContext dbContext;
-
+        
         public QuizController(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -29,7 +29,6 @@ namespace QuizApp.Controllers
                                 new SelectListItem(y.Text, y.Id.ToString())).ToList()
 
                 })
-
                 .ToList();
 
             return View(new QuizViewModel() { Questions = questions });
@@ -41,6 +40,7 @@ namespace QuizApp.Controllers
             var questions = dbContext.Questions.ToList();
             var score = 0;
             var totalScore = questions.Count;
+            
             for (int i = 0; i < usersAnswers.Count; i++)
             {
                 if (questions[i].CorrectOption == usersAnswers[i])
@@ -48,6 +48,16 @@ namespace QuizApp.Controllers
                     score++;
                 }
             }
+            /*
+            // Jämför baserat på om det valda ID:t finns bland frågorna som CorrectOption
+            foreach (var answerId in usersAnswers)
+            {
+                if (questions.Any(q => q.CorrectOption == answerId))
+                {
+                    score++;
+                }
+            }
+            */
 
             ViewBag.Score = score;
             ViewBag.TotalScore = totalScore;

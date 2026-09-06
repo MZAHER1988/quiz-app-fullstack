@@ -9,7 +9,7 @@ public class QuizViewModel
 }
 
 // Represents a single question in the quiz along with its possible answer options
-public class  QuestionItem
+public class QuestionItem
 {
     public required Guid Id { get; set; }                   // The unique identifier of the question
     public required string Text { get; set; }               // The text of the question
