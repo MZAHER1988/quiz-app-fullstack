@@ -1,9 +1,416 @@
-﻿
+﻿@model QuizApp.Models.ViewModels.QuizResultViewModel
 
-<h2>Quiz completed: @ViewBag.Score / @ViewBag.TotalScore</h2>
+@{
+    ViewData["Title"] = "Quiz Results";
 
-<div class="my-4">
-    <a asp-controller="Quiz" asp-action="Index" class="btn btn-primary">Try Again</a>
+    double percentage =
+        Model.TotalQuestions > 0
+            ? ((double)Model.Score / Model.TotalQuestions) * 100
+            : 0;
+
+    int roundedPercentage =
+        (int)Math.Round(percentage);
+
+    string resultMessage =
+        percentage >= 80
+            ? "Excellent work!"
+            : percentage >= 50
+                ? "Good job!"
+                : "Keep practicing!";
+
+    string resultIcon =
+        percentage >= 80
+            ? "🏆"
+            : percentage >= 50
+                ? "👏"
+                : "💪";
+}
+
+
+<div class="modern-page results-page">
+
+    <div class="results-background-shape results-shape-one"></div>
+    <div class="results-background-shape results-shape-two"></div>
+
+
+    <div class="container py-4 py-md-5">
+
+        <div class="results-wrapper">
+
+
+            <!-- =========================
+                 SCORE HERO
+                 ========================= -->
+
+            <div class="results-summary">
+
+
+                <div class="results-icon">
+                    @resultIcon
+                </div>
+
+
+                <div class="results-badge">
+                    QUIZ COMPLETED
+                </div>
+
+
+                <h1 class="results-title">
+                    @resultMessage
+                </h1>
+
+
+                <p class="results-description">
+                    You completed the Brain Quest challenge.
+                </p>
+
+
+                <!-- Score -->
+
+                <div class="score-container">
+
+                    <div class="score-number">
+
+                        @Model.Score
+
+                        <span>
+                            / @Model.TotalQuestions
+                        </span>
+
+                    </div>
+
+
+                    <div class="score-label">
+                        Correct answers
+                    </div>
+
+                </div>
+
+
+                <!-- Percentage -->
+
+                <div class="result-progress-wrapper">
+
+                    <div class="result-progress-info">
+
+                        <span>
+                            Your score
+                        </span>
+
+                        <strong>
+                            @roundedPercentage%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-progress-track">
+
+                        <div class="result-progress-bar"
+                             style="width: @percentage.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Actions -->
+
+                <div class="results-actions">
+
+                    <a asp-controller="Quiz"
+                       asp-action="Index"
+                       class="main-gradient-btn">
+
+                        <span>↻</span>
+
+                        Play Again
+
+                    </a>
+
+
+                    <a asp-controller="Quiz"
+                       asp-action="Start"
+                       class="outline-action-btn">
+
+                        <span>⌂</span>
+
+                        Home
+
+                    </a>
+
+                </div>
+
+
+                <!-- Review button -->
+
+                <button type="button"
+                        id="reviewToggleButton"
+                        class="review-toggle-btn">
+
+                    <span class="review-toggle-icon">
+                        👁
+                    </span>
+
+                    <span id="reviewToggleText">
+                        Review Answers
+                    </span>
+
+                    <span id="reviewToggleArrow">
+                        ↓
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 REVIEW
+                 ========================= -->
+
+            <div id="reviewSection"
+                 class="review-card review-hidden">
+
+
+                <div class="review-header">
+
+                    <div>
+
+                        <span class="review-label">
+                            ANSWER REVIEW
+                        </span>
+
+                        <h2>
+                            Your answers
+                        </h2>
+
+                        <p>
+                            See which questions you answered correctly.
+                        </p>
+
+                    </div>
+
+
+                    <div class="review-count">
+
+                        @Model.Questions.Count
+                        questions
+
+                    </div>
+
+                </div>
+
+
+                <div class="review-list">
+
+                    @for (int i = 0; i < Model.Questions.Count; i++)
+                    {
+                        var q =
+                        Model.Questions[i];
+
+
+                        <div class="review-item @(q.IsCorrect ? "correct" : "incorrect")">
+
+
+                            <!-- Question -->
+
+                            <div class="review-question-header">
+
+
+                                <div class="review-question-number">
+
+                                    @(i + 1)
+
+                                </div>
+
+
+                                <div class="review-question">
+
+                                    @q.QuestionText
+
+                                </div>
+
+
+                                @if (q.IsCorrect)
+                                {
+                                    <span class="review-status correct-status">
+                                        ✓ Correct
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="review-status incorrect-status">
+                                        ✕ Incorrect
+                                    </span>
+                                }
+
+                            </div>
+
+
+                            <!-- Answers -->
+
+                            <div class="review-answers">
+
+
+                                <div class="review-answer user-answer">
+
+                                    <div class="answer-label">
+                                        Your answer
+                                    </div>
+
+                                    <div class="answer-value">
+                                        @q.UserAnswerText
+                                    </div>
+
+                                </div>
+
+
+                                @if (!q.IsCorrect)
+                                {
+                                    <div class="review-answer correct-answer">
+
+                                        <div class="answer-label">
+                                            Correct answer
+                                        </div>
+
+                                        <div class="answer-value">
+                                            @q.CorrectAnswerText
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+
+            <div class="results-footer">
+
+                <span>
+                    🧠 Brain Quest
+                </span>
+
+                <span>
+                    Keep learning. Keep improving.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
+
+@section Scripts {
+
+    <script>
+
+        const reviewButton =
+            document.getElementById(
+                'reviewToggleButton'
+            );
+
+        const reviewSection =
+            document.getElementById(
+                'reviewSection'
+            );
+
+        const reviewToggleText =
+            document.getElementById(
+                'reviewToggleText'
+            );
+
+        const reviewToggleArrow =
+            document.getElementById(
+                'reviewToggleArrow'
+            );
+
+
+        if (
+            reviewButton &&
+            reviewSection
+        ) {
+
+            reviewButton.addEventListener(
+                'click',
+                function () {
+
+                    const isHidden =
+                        reviewSection.classList.contains(
+                            'review-hidden'
+                        );
+
+
+                    if (isHidden) {
+
+                        reviewSection.classList.remove(
+                            'review-hidden'
+                        );
+
+
+                        reviewSection.classList.add(
+                            'review-visible'
+                        );
+
+
+                        reviewToggleText.textContent =
+                            'Hide Review';
+
+
+                        reviewToggleArrow.textContent =
+                            '↑';
+
+
+                        setTimeout(function () {
+
+                            reviewSection.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+
+                        }, 100);
+
+                    }
+                    else {
+
+                        reviewSection.classList.remove(
+                            'review-visible'
+                        );
+
+
+                        reviewSection.classList.add(
+                            'review-hidden'
+                        );
+
+
+                        reviewToggleText.textContent =
+                            'Review Answers';
+
+
+                        reviewToggleArrow.textContent =
+                            '↓';
+
+                    }
+
+                }
+            );
+
+        }
+
+    </script>
+
+}
 

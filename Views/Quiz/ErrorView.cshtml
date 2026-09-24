@@ -1,0 +1,85 @@
+﻿@model QuizApp.Models.ViewModels.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Something went wrong";
+}
+
+
+<div class="modern-page error-page">
+
+    <div class="error-background-shape error-shape-one"></div>
+    <div class="error-background-shape error-shape-two"></div>
+
+
+    <div class="container py-5">
+
+        <div class="error-wrapper">
+
+            <div class="error-card">
+
+
+                <div class="error-icon">
+                    ⚠️
+                </div>
+
+
+                <div class="error-badge">
+                    SOMETHING WENT WRONG
+                </div>
+
+
+                <h1 class="error-title">
+                    We couldn't continue
+                </h1>
+
+
+                <p class="error-description">
+                    @Model.ErrorMessage
+                </p>
+
+
+                <div class="error-actions">
+
+                    <a asp-controller="Quiz"
+                       asp-action="Index"
+                       class="main-gradient-btn">
+
+                        <span>↻</span>
+
+                        Try Again
+
+                    </a>
+
+
+                    <a asp-controller="Quiz"
+                       asp-action="Start"
+                       class="outline-action-btn">
+
+                        <span>⌂</span>
+
+                        Back to Home
+
+                    </a>
+
+                </div>
+
+
+                <div class="error-help">
+
+                    <span>
+                        💡
+                    </span>
+
+                    <span>
+                        If the problem continues, please try again later.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
