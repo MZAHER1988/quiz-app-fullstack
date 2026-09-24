@@ -1,26 +1,197 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+    bool isQuizPage =
+        currentController == "Quiz" &&
+        currentAction == "Index";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - QuizApp</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/QuizApp.styles.css" asp-append-version="true" />
-</head>
-<body>
-    
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    
+    <title>@ViewData["Title"] - Brain Quest</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+         ========================= -->
+
+    <header class="main-navbar">
+
+        <nav class="navbar navbar-expand-lg">
+
+            <div class="container navbar-container">
+
+                <!-- Logo -->
+
+                <a class="navbar-brand brain-navbar-brand"
+                   asp-controller="Quiz"
+                   asp-action="Start">
+
+                    <span class="navbar-logo">
+                        🧠
+                    </span>
+
+                    <span>
+                        Brain<span>Quest</span>
+                    </span>
+
+                </a>
+
+
+                <!-- Mobile menu -->
+
+                <button class="navbar-toggler custom-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavigation"
+                        aria-controls="mainNavigation"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </button>
+
+
+                <!-- Navigation -->
+
+                <div class="collapse navbar-collapse"
+                     id="mainNavigation">
+
+                    <ul class="navbar-nav mx-auto">
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Quiz"
+                               asp-action="Start">
+
+                                Home
+
+                            </a>
+
+                        </li>
+
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               href="/#how-it-works">
+
+                                How It Works
+
+                            </a>
+
+                        </li>
+
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               href="/#about-quiz">
+
+                                About
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+
+                    <div class="navbar-actions">
+
+                        @if (isQuizPage)
+                        {
+                            <a asp-controller="Quiz"
+                               asp-action="Start"
+                               class="navbar-exit-btn">
+
+                                ✕ Exit Quiz
+
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Quiz"
+                               asp-action="Index"
+                               class="navbar-start-btn">
+
+                                Start Quiz
+                                <span>→</span>
+
+                            </a>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================
+         PAGE
+         ========================= -->
+
+    <main>
+        @RenderBody()
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+         ========================= -->
+
+    <footer class="main-footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div class="footer-brand">
+                    🧠 BrainQuest
+                </div>
+
+                <div class="footer-text">
+                    Challenge yourself. Learn something new.
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

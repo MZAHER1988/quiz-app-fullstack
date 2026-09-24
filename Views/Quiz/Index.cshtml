@@ -1,36 +1,569 @@
 ﻿@model QuizApp.Models.ViewModels.QuizViewModel
 
-@if (Model.Questions.Any())
-{
-    <form asp-controller="Quiz" asp-action="Submit" method="post">
-        <div class="mt-4">
-            <h1>Guess the capital - (@Model.Questions.Count questions) </h1>
+@{
+    ViewData["Title"] = "Quiz";
+}
 
-            <div class="mt-4">
-                @for (int i = 0; i < Model.Questions.Count; i++)
-                {
-                    <h3>@Model.Questions[i].Text</h3>
-                    <div class="mb-3">
-                        @foreach (var option in Model.Questions[i].Options)
+<div class="modern-page quiz-page">
+
+    <div class="quiz-background-shape quiz-shape-one"></div>
+    <div class="quiz-background-shape quiz-shape-two"></div>
+
+
+    <div class="container py-4 py-md-5">
+
+        @if (Model.Questions != null && Model.Questions.Any())
+        {
+            <div class="quiz-wrapper">
+
+
+                <!-- =========================
+                     QUIZ TOP BAR
+                     ========================= -->
+
+                <div class="quiz-topbar">
+
+                    <div class="quiz-title-area">
+
+                        <div class="quiz-mini-logo">
+                            🧠
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Brain Quest
+                            </strong>
+
+                            <span>
+                                Knowledge Challenge
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <a asp-controller="Quiz"
+                       asp-action="Start"
+                       class="quiz-exit-button">
+
+                        <span>✕</span>
+                        Exit Quiz
+
+                    </a>
+
+                </div>
+
+
+                <!-- =========================
+                     PROGRESS
+                     ========================= -->
+
+                <div class="quiz-progress-card">
+
+                    <div class="quiz-progress-info">
+
+                        <span id="questionCounter">
+                            Question 1 of @Model.Questions.Count
+                        </span>
+
+                        <strong id="progressPercentage">
+                            10%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="quiz-progress-track">
+
+                        <div id="quizProgressBar"
+                             class="quiz-progress-bar"
+                             style="width: 10%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     WARNING
+                     ========================= -->
+
+                <div id="validationWarning"
+                     class="quiz-warning d-none">
+
+                    <div class="warning-icon">
+                        ⚠️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Choose an answer first
+                        </strong>
+
+                        <span>
+                            Please select an answer before continuing.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     QUIZ CARD
+                     ========================= -->
+
+                <div class="quiz-card">
+
+                    <form asp-controller="Quiz"
+                          asp-action="Submit"
+                          method="post"
+                          id="quizForm">
+
+                        @Html.AntiForgeryToken()
+
+
+                        @for (int i = 0; i < Model.Questions.Count; i++)
                         {
-                            <p>
-                                <label>
-                                    <input required type="radio" name="usersAnswers[@i]" value="@option.Value" />
-                                    @option.Text
-                                </label>
-                            </p>
-                        }
-                    </div>                    
-                }
-    
-            </div>
+                            var q = Model.Questions[i];
 
-        </div>
-        <div>
-            
-            <button type="submit" class="btn btn-primary">Submit Answers</button>
-        </div>
-    </form>
-    
-    
+
+                            <div class="question-step"
+                                 data-step="@i"
+                                 data-question-id="@q.Id"
+                                 style="@(i == 0 ? "display:block;" : "display:none;")">
+
+
+                                <div class="question-header">
+
+                                    <div class="question-number">
+                                        Question @(i + 1)
+                                    </div>
+
+                                    <div class="question-decoration">
+                                        ✦
+                                    </div>
+
+                                </div>
+
+
+                                <h1 class="question-title">
+                                    @q.Text
+                                </h1>
+
+
+                                <p class="question-hint">
+                                    Select one answer
+                                </p>
+
+
+                                <!-- OPTIONS -->
+
+                                <div class="options-container">
+
+                                    @for (int j = 0; j < q.Options.Count; j++)
+                                    {
+                                        var option = q.Options[j];
+
+                                        char letter =
+                                        (char)('A' + j);
+
+
+                                        <div class="option-wrapper">
+
+                                            <input type="radio"
+                                                   class="quiz-radio"
+                                                   name="userAnswers[@q.Id]"
+                                                   id="opt_@(q.Id)_@(option.Value)"
+                                                   value="@option.Value"
+                                                   autocomplete="off" />
+
+
+                                            <label class="quiz-option"
+                                                   for="opt_@(q.Id)_@(option.Value)">
+
+                                                <span class="option-letter">
+                                                    @letter
+                                                </span>
+
+                                                <span class="option-text">
+                                                    @option.Text
+                                                </span>
+
+                                                <span class="option-arrow">
+                                                    →
+                                                </span>
+
+                                            </label>
+
+                                        </div>
+                                    }
+
+                                </div>
+
+
+                                <!-- NAVIGATION -->
+
+                                <div class="quiz-navigation">
+
+                                    <button type="button"
+                                            class="quiz-nav-btn secondary"
+                                            onclick="changeStep(-1)"
+                                            @(i == 0 ? "disabled" : "")>
+
+                                        <span>←</span>
+
+                                        Previous
+
+                                    </button>
+
+
+                                    @if (i < Model.Questions.Count - 1)
+                                    {
+                                        <button type="button"
+                                                class="quiz-nav-btn primary"
+                                                onclick="changeStep(1)">
+
+                                            Next
+
+                                            <span>→</span>
+
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit"
+                                                class="quiz-nav-btn submit">
+
+                                            Finish Quiz
+
+                                            <span>✓</span>
+
+                                        </button>
+                                    }
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </form>
+
+                </div>
+
+
+                <div class="quiz-bottom-info">
+
+                    <span>
+                        🔒 Your answers are processed securely
+                    </span>
+
+                    <span>
+                        You can exit anytime
+                    </span>
+
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+
+                <div class="empty-state-icon">
+                    🧠
+                </div>
+
+                <h2>
+                    No questions available
+                </h2>
+
+                <p>
+                    There are currently no quiz questions available.
+                </p>
+
+                <a asp-controller="Quiz"
+                   asp-action="Start"
+                   class="main-gradient-btn">
+
+                    Back to Home
+
+                </a>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        let currentStep = 0;
+
+        const steps =
+            document.querySelectorAll('.question-step');
+
+        const totalSteps =
+            steps.length;
+
+        const counterElement =
+            document.getElementById('questionCounter');
+
+        const progressBar =
+            document.getElementById('quizProgressBar');
+
+        const progressPercentage =
+            document.getElementById('progressPercentage');
+
+        const quizForm =
+            document.getElementById('quizForm');
+
+        const validationWarning =
+            document.getElementById('validationWarning');
+
+
+        function updateProgress() {
+
+            if (totalSteps === 0) {
+                return;
+            }
+
+
+            const percentage =
+                ((currentStep + 1) / totalSteps) * 100;
+
+
+            if (counterElement) {
+
+                counterElement.textContent =
+                    `Question ${currentStep + 1} of ${totalSteps}`;
+
+            }
+
+
+            if (progressBar) {
+
+                progressBar.style.width =
+                    `${percentage}%`;
+
+            }
+
+
+            if (progressPercentage) {
+
+                progressPercentage.textContent =
+                    `${Math.round(percentage)}%`;
+
+            }
+
+        }
+
+
+        function showStep(stepIndex) {
+
+            if (totalSteps === 0) {
+                return;
+            }
+
+
+            steps.forEach((step, index) => {
+
+                step.style.display =
+                    index === stepIndex
+                        ? 'block'
+                        : 'none';
+
+            });
+
+
+            currentStep =
+                stepIndex;
+
+
+            updateProgress();
+
+
+            if (validationWarning) {
+
+                validationWarning.classList.add(
+                    'd-none'
+                );
+
+            }
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+        }
+
+
+        function changeStep(delta) {
+
+            if (totalSteps === 0) {
+                return;
+            }
+
+
+            const currentQuestion =
+                steps[currentStep];
+
+
+            if (delta > 0) {
+
+                const selectedOption =
+                    currentQuestion.querySelector(
+                        'input[type="radio"]:checked'
+                    );
+
+
+                if (!selectedOption) {
+
+                    if (validationWarning) {
+
+                        validationWarning.classList.remove(
+                            'd-none'
+                        );
+
+                    }
+
+                    return;
+                }
+
+            }
+
+
+            let newStep =
+                currentStep + delta;
+
+
+            if (newStep < 0) {
+
+                newStep = 0;
+
+            }
+
+
+            if (newStep >= totalSteps) {
+
+                newStep =
+                    totalSteps - 1;
+
+            }
+
+
+            showStep(newStep);
+
+        }
+
+
+        function goToStep(stepIndex) {
+
+            if (
+                stepIndex < 0 ||
+                stepIndex >= totalSteps
+            ) {
+
+                return;
+
+            }
+
+
+            showStep(stepIndex);
+
+        }
+
+
+        if (quizForm) {
+
+            quizForm.addEventListener(
+                'submit',
+                function (event) {
+
+                    for (
+                        let i = 0;
+                        i < totalSteps;
+                        i++
+                    ) {
+
+                        const step =
+                            steps[i];
+
+
+                        const hasSelectedOption =
+                            step.querySelector(
+                                'input[type="radio"]:checked'
+                            );
+
+
+                        if (!hasSelectedOption) {
+
+                            event.preventDefault();
+
+
+                            goToStep(i);
+
+
+                            if (validationWarning) {
+
+                                validationWarning.classList.remove(
+                                    'd-none'
+                                );
+
+                            }
+
+
+                            return;
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*
+         * Add a small interaction when
+         * the user selects an answer.
+         */
+
+        document
+            .querySelectorAll('.quiz-radio')
+            .forEach(function (radio) {
+
+                radio.addEventListener(
+                    'change',
+                    function () {
+
+                        if (validationWarning) {
+
+                            validationWarning.classList.add(
+                                'd-none'
+                            );
+
+                        }
+
+                    }
+                );
+
+            });
+
+
+        updateProgress();
+
+    </script>
+
 }

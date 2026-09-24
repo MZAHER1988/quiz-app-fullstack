@@ -8,3 +8,7 @@ obj/
 node_modules/
 dist/
 .env
+
+# Local configuration / secrets
+appsettings.Local.json
+appsettings.*.Local.json

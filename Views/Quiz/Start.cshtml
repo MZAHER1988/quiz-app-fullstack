@@ -1,0 +1,392 @@
+﻿@{
+    ViewData["Title"] = "Welcome";
+}
+
+<div class="modern-page start-page">
+
+    <!-- Decorative background -->
+
+    <div class="background-shape shape-one"></div>
+    <div class="background-shape shape-two"></div>
+    <div class="background-shape shape-three"></div>
+
+
+    <!-- =========================
+         HERO
+         ========================= -->
+
+    <section class="hero-section">
+
+        <div class="container">
+
+            <div class="hero-grid">
+
+                <!-- Left -->
+
+                <div class="hero-content">
+
+                    <div class="hero-badge">
+
+                        <span class="hero-badge-dot"></span>
+
+                        Brain Quest Quiz
+
+                    </div>
+
+
+                    <h1 class="hero-title">
+
+                        Challenge your
+                        <span>mind.</span>
+
+                    </h1>
+
+
+                    <p class="hero-description">
+
+                        Test your knowledge with randomly selected
+                        questions and discover how much you really know.
+
+                        No registration. No complicated setup.
+                        Just answer and have fun.
+
+                    </p>
+
+
+                    <div class="hero-actions">
+
+                        <a asp-controller="Quiz"
+                           asp-action="Index"
+                           class="main-gradient-btn">
+
+                            Start Quiz
+
+                            <span>→</span>
+
+                        </a>
+
+
+                        <a href="#how-it-works"
+                           class="outline-action-btn">
+
+                            How it works
+
+                            <span>↓</span>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="hero-meta">
+
+                        <div>
+                            <strong>10</strong>
+                            <span>Questions</span>
+                        </div>
+
+                        <div class="meta-divider"></div>
+
+                        <div>
+                            <strong>∞</strong>
+                            <span>Challenges</span>
+                        </div>
+
+                        <div class="meta-divider"></div>
+
+                        <div>
+                            <strong>⚡</strong>
+                            <span>Instant results</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Right: Quiz preview -->
+
+                <div class="hero-visual">
+
+                    <div class="floating-circle circle-purple"></div>
+                    <div class="floating-circle circle-blue"></div>
+
+
+                    <div class="quiz-preview-card">
+
+                        <div class="preview-header">
+
+                            <div class="preview-logo">
+                                🧠
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Brain Quest
+                                </strong>
+
+                                <span>
+                                    Quick challenge
+                                </span>
+
+                            </div>
+
+                            <div class="preview-dots">
+                                •••
+                            </div>
+
+                        </div>
+
+
+                        <div class="preview-progress">
+
+                            <div class="preview-progress-info">
+                                <span>Question 4 of 10</span>
+                                <strong>40%</strong>
+                            </div>
+
+                            <div class="preview-progress-track">
+
+                                <div class="preview-progress-bar"></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="preview-question">
+
+                            <span>
+                                QUESTION 4
+                            </span>
+
+                            <h3>
+                                Which language is mainly used
+                                to style web pages?
+                            </h3>
+
+                        </div>
+
+
+                        <div class="preview-options">
+
+                            <div class="preview-option">
+                                <span>A</span>
+                                JavaScript
+                            </div>
+
+                            <div class="preview-option selected">
+                                <span>B</span>
+                                CSS
+                                <strong>✓</strong>
+                            </div>
+
+                            <div class="preview-option">
+                                <span>C</span>
+                                SQL
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="floating-score-card">
+
+                        <span>🏆</span>
+
+                        <div>
+                            <strong>Great score!</strong>
+                            <small>8 / 10 correct</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         HOW IT WORKS
+         ========================= -->
+
+    <section id="how-it-works"
+             class="info-section">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <span>
+                    SIMPLE PROCESS
+                </span>
+
+                <h2>
+                    How does it work?
+                </h2>
+
+                <p>
+                    Three simple steps and you're ready to challenge yourself.
+                </p>
+
+            </div>
+
+
+            <div class="steps-grid">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <div class="step-icon">
+                        🚀
+                    </div>
+
+                    <h3>
+                        Start
+                    </h3>
+
+                    <p>
+                        Start a new quiz and receive
+                        a set of random questions.
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <div class="step-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Answer
+                    </h3>
+
+                    <p>
+                        Choose the answer you think
+                        is correct for each question.
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <div class="step-icon">
+                        🏆
+                    </div>
+
+                    <h3>
+                        See your result
+                    </h3>
+
+                    <p>
+                        Get your score and review
+                        your answers at the end.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ABOUT
+         ========================= -->
+
+    <section id="about-quiz"
+             class="about-section">
+
+        <div class="container">
+
+            <div class="about-card">
+
+                <div class="about-icon">
+                    💡
+                </div>
+
+                <div>
+
+                    <span class="about-label">
+                        ABOUT BRAIN QUEST
+                    </span>
+
+                    <h2>
+                        Learn while you play.
+                    </h2>
+
+                    <p>
+                        Brain Quest is a simple knowledge quiz designed
+                        to make learning more enjoyable. Every quiz gives
+                        you a different selection of questions so you can
+                        challenge yourself again and again.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FINAL CTA
+         ========================= -->
+
+    <section class="final-cta">
+
+        <div class="container">
+
+            <div class="final-cta-card">
+
+                <div>
+                    <span>READY?</span>
+
+                    <h2>
+                        Let's see what you know.
+                    </h2>
+                </div>
+
+                <a asp-controller="Quiz"
+                   asp-action="Index"
+                   class="white-cta-btn">
+
+                    Start Quiz
+                    <span>→</span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+
