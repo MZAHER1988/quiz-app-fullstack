@@ -12,3 +12,7 @@ dist/
 # Local configuration / secrets
 appsettings.Local.json
 appsettings.*.Local.json
+
+# Deployment credentials
+*.publishSettings
+*.PublishSettings
