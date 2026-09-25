@@ -66,7 +66,8 @@ The application uses IDs rather than answer text when submitting and checking an
 
 The application follows the ASP.NET Core MVC pattern:
 
-'''text
+
+```text
 QuizApp
 │
 ├── Controllers
@@ -106,7 +107,7 @@ QuizApp
 ├── QuizApp.csproj
 ├── appsettings.json
 └── appsettings.Development.json
-'''
+```
 
 ---
 
